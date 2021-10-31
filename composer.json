@@ -1,0 +1,21 @@
+{
+    "name": "aregsar/converter",
+    "description": "currency converter",
+    "homepage": "https://github.com/aregsar/converter",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Areg Sarkissian",
+            "email": "aregsar@gmail.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {}
+}
