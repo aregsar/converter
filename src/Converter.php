@@ -14,12 +14,3 @@ class Converter
         return $this->currencyMap[$currency];
     }
 }
-
-
-// class ConverterX
-// {
-//     public function __construct(private ?array $currencyMap = null)
-//     {
-//         print "In BaseClass constructor\n";
-//     }
-// }
