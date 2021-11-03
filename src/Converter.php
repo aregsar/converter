@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Converter;
+namespace Aregsar\Converter;
 
 class Converter
 {
