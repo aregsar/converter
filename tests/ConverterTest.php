@@ -2,11 +2,11 @@
 
 namespace Aregsar\Converter\Tests;
 
-use PHPUnit\Framework\TestCase;
+use Aregsar\Converter\Tests\BaseTestCase;
 
 use Aregsar\Converter\Converter;
 
-class ConverterTest extends TestCase
+class ConverterTest extends BaseTestCase
 {
     /**
      * @test
