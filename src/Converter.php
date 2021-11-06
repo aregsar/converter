@@ -6,7 +6,7 @@ class Converter
 {
     public function __construct(private ?array $currencyMap = null)
     {
-        $this->currencyMap = $currencyMap ?? ['EUR' => 2];
+        $this->currencyMap = $currencyMap ?? ['EUR' => 42];
     }
 
     public function convert(string $currency): ?int

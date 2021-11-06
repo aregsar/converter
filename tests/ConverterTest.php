@@ -13,9 +13,9 @@ class ConverterTest extends BaseTestCase
      */
     public function it_converts()
     {
-        $converter = new Converter(['MRK' => 2]);
+        $converter = new Converter(['EUR' => 2]);
 
-        $amount = $converter->convert("MRK");
+        $amount = $converter->convert("EUR");
 
         $this->assertEquals($amount, 2);
     }
