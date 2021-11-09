@@ -32,5 +32,12 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aregsar\\Converter\\ConverterServiceProvider"
+            ]
+        }
     }
 }
