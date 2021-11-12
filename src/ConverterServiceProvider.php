@@ -24,8 +24,11 @@ class ConverterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //Add configuration loading code here
-
         //Add Laravel container service registration code here
+        $this->app->singleton('converter', function ($app) {
+            return new Converter();
+        });
+
+        //Add configuration loading code here
     }
 }
