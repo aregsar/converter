@@ -1,10 +1,10 @@
 <?php
 
-namespace Aregsar\Converter\Tests;
+namespace Acme\Converter\Tests;
+
+use Illuminate\Support\Facades\App;
 
 use Aregsar\Converter\Tests\BaseTestCase;
-
-use Aregsar\Converter\Converter;
 
 class ConverterTest extends BaseTestCase
 {
@@ -13,10 +13,11 @@ class ConverterTest extends BaseTestCase
      */
     public function it_converts()
     {
-        $converter = new Converter(['EUR' => 2]);
+        //uses the Laravel APP facade to access the DI container
+        $converter = App::make("converter");
 
         $amount = $converter->convert("EUR");
 
-        $this->assertEquals($amount, 2);
+        $this->assertEquals($amount, 42);
     }
 }
