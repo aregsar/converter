@@ -2,7 +2,9 @@
 
 namespace Aregsar\Converter\Tests;
 
-use PHPUnit\Framework\TestCase;
+use Orchestra\Testbench\TestCase;
+
+use Aregsar\Converter\ConverterServiceProvider;
 
 abstract class BaseTestCase extends TestCase
 {
@@ -11,7 +13,8 @@ abstract class BaseTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        //Add initialization code here
+        parent::setUp();
+        //Add initialization code here after the parent setUp
     }
 
     /**
@@ -19,6 +22,27 @@ abstract class BaseTestCase extends TestCase
      */
     protected function tearDown(): void
     {
-        //Add cleanup code here
+        //Add cleanup code here before the parent tearDown
+        parent::tearDown();
+    }
+
+    /**
+     * This method exposes package service providers to the Orchestra testing fixture.
+     */
+    protected function getPackageProviders($app)
+    {
+        //we just have a single service provider at the moment
+        //The Orchestra testbench test framework will call the register methods and then the boot methods on
+        //these service providers to emulate way Laravel bootstrap flow
+        return [ConverterServiceProvider::class];
+    }
+
+    /**
+     * This method sets up the environment for tests.
+     * Called once before all tests are run
+     */
+    protected function getEnvironmentSetup($app)
+    {
+        //we can setup configuration or run database migrations here to setup the test environment
     }
 }
