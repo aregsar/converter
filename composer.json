@@ -37,10 +37,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Acme\\Converter\\ConverterServiceProvider"
+                "Aregsar\\Converter\\ConverterServiceProvider"
             ],
             "aliases": {
-                "Converter": "Acme\\Converter\\ConverterFacade"
+                "Converter": "Aregsar\\Converter\\ConverterFacade"
             }
         }
     }
