@@ -45,4 +45,11 @@ abstract class BaseTestCase extends TestCase
     {
         //we can setup configuration or run database migrations here to setup the test environment
     }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Converter' => \Aregsar\Converter\ConverterFacade::class
+        ];
+    }
 }
