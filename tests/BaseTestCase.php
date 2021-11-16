@@ -48,11 +48,10 @@ abstract class BaseTestCase extends TestCase
 
     /**
      * This method registers facade alias mappings with the Laravel aliases array
-     * Called once before all tests are run
+     * This method is called after each test.
      */
     protected function getPackageAliases($app)
     {
-        echo "\n getPackageAliases \n";
         return [
             'Converter' => \Aregsar\Converter\ConverterFacade::class
         ];

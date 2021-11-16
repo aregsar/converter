@@ -21,9 +21,11 @@ class ConverterTest extends BaseTestCase
     /**
      * @test
      */
-    // public function it_converts2()
-    // {
-    //     $amount = Converter::convert("EUR");
-    //     $this->assertEquals($amount, 42);
-    // }
+    public function it_converts2()
+    {
+        $amount = \Aregsar\Converter\ConverterFacade::convert("EUR");
+
+        // $amount = Converter::convert("EUR");
+        $this->assertEquals($amount, 42);
+    }
 }
