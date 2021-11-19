@@ -7,28 +7,29 @@ use Illuminate\Support\ServiceProvider;
 class ConverterServiceProvider extends ServiceProvider
 {
     /**
+     * Register the application services.
+     */
+    public function register()
+    {
+        //Add configuration loading code here
+        $this->mergeConfigFrom(__DIR__ . '/../config/converter.php', 'acme-converter');
+
+        //Add Laravel container service registration code here
+        $this->app->singleton('converter', function ($app) {
+            return new Converter();
+        });
+    }
+
+    /**
      * Bootstrap the application services.
      */
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            //Add resource publishing code here
+            //Add package resource publishing code here
             //Add package commands here
         }
 
-        //add resource loading code here
-    }
-
-    /**
-     * Register the application services.
-     */
-    public function register()
-    {
-        //Add Laravel container service registration code here
-        $this->app->singleton('converter', function ($app) {
-            return new Converter();
-        });
-
-        //Add configuration loading code here
+        //add package resource loading path code here
     }
 }
