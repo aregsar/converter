@@ -27,6 +27,10 @@ class ConverterServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             //Add package resource publishing code here
+            $this->publishes([
+                __DIR__ . '/../config/converter.php' => config_path('acme-converter.php'),
+            ], 'config');
+
             //Add package commands here
         }
 
