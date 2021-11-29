@@ -6,9 +6,18 @@ use Illuminate\Console\Command;
 
 class ConverterCommand extends Command
 {
-    protected $signature = "converter:convert {currency}";
-
     protected $description = "Given a currency type prints its converted value in dollars";
+
+    public function __construct()
+    {
+        //use the package configuration setting to set the command signature
+        //acme-converter is our root configuration key under which all settings reside
+        $commandPrefix = config('acme-converter.command_prefix');
+
+        $this->signature = "$commandPrefix:converter:convert {currency}";
+
+        parent::__construct();
+    }
 
     public function handle()
     {

@@ -1,4 +1,5 @@
 <?php
 return [
-    "packagename_prefix" => "acme"
+    "packagename_prefix" => "acme",
+    "command_prefix" => "acme",
 ];
