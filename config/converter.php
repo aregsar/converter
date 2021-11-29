@@ -1,4 +1,4 @@
 <?php
 return [
-    "packagename_prefix" => "acme-converter"
+    "packagename_prefix" => "acme"
 ];

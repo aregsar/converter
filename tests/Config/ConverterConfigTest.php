@@ -11,9 +11,8 @@ class ConverterConfigTests extends BaseTestCase
      */
     public function it_loads_configuration_settings()
     {
-        //config()->set("acme-converter.test","123");
         $setting = config("acme-converter.packagename_prefix");
 
-        $this->assertSame("acme-converter", $setting);
+        $this->assertSame("acme", $setting);
     }
 }
