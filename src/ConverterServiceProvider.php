@@ -34,6 +34,9 @@ class ConverterServiceProvider extends ServiceProvider
             ], 'config');
 
             //Add package commands here
+            $this->commands([
+                \Aregsar\Converter\Console\Commands\ConverterCommand::class,
+            ]);
         }
 
         //add package resource loading path code here
