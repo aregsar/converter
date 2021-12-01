@@ -11,15 +11,15 @@ class ConverterCommandTest extends BaseTestCase
      */
     public function the_command_works()
     {
-        // \Aregsar\Converter\ConverterFacade::shouldReceive("convert")
-        //     ->with("EUR")
-        //     ->once()
-        //     ->andReturn("42");
-
-        \Converter::shouldReceive("convert")
+        \Aregsar\Converter\ConverterFacade::shouldReceive("convert")
             ->with("EUR")
             ->once()
             ->andReturn("42");
+
+        // \Converter::shouldReceive("convert")
+        //     ->with("EUR")
+        //     ->once()
+        //     ->andReturn("42");
 
         $commandPrefix = config("acme-converter.command_prefix");
 
