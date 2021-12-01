@@ -40,5 +40,6 @@ class ConverterServiceProvider extends ServiceProvider
         }
 
         //add package resource loading path code here
+        $this->loadRoutesFrom(__DIR__ . '/../routes/converter.php');
     }
 }
