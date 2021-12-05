@@ -39,7 +39,9 @@ class ConverterServiceProvider extends ServiceProvider
             ]);
         }
 
-        //add package resource loading path code here
+        //Add package resource loading path code here
         $this->loadRoutesFrom(__DIR__ . '/../routes/converter.php');
+
+        $this->loadViewsFrom(__DIR__ . "/../resources/views", "acme-converter");
     }
 }
