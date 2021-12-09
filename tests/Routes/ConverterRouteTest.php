@@ -18,7 +18,7 @@ class ConverterRouteTests extends BaseTestCase
 
         $this->get("{$routeUrlPrefix}convert/EUR")
             ->assertOK()
-            ->assertViewIs("acme-converter::convert")
+            ->assertViewIs("acme-converter::converter.convert")
             ->assertViewHas("amount", "42")
             ->assertSee("Converter View Result 42");
     }
@@ -36,7 +36,7 @@ class ConverterRouteTests extends BaseTestCase
 
         $this->get("{$routeUrlPrefix}convert/XYZ")
             ->assertOK()
-            ->assertViewIs("acme-converter::convert")
+            ->assertViewIs("acme-converter::converter.convert")
             ->assertViewHas("amount", "Currency not supported")
             ->assertSee("Converter View Result Currency not supported");
     }

@@ -12,10 +12,10 @@ Route::middleware([$routeMiddlewareGroup])
     ->group(function () {
         Route::get("convert/{currency}", function ($currency) {
             $amount = \Converter::convert($currency);
-            //$amount = $amount ?? "Currency not supported";
+
             $amount ??= "Currency not supported";
 
-            return view("acme-converter::convert", [
+            return view("acme-converter::converter.convert", [
                 "amount" => $amount,
             ]);
         })->name("convert");
