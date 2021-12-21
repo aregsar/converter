@@ -8,7 +8,7 @@ class ConverterServiceProvider extends ServiceProvider
 {
     const CONVERTER_CONFIG_KEY = 'acme-converter';
     const CONVERTER_VIEWS_NAMESPACE = 'acme-converter';
-
+    const CONVERTER_COMPONENT_CLASS_TAG_PREFIX = 'acme';
     /**
      * Register the application services.
      */
@@ -48,5 +48,14 @@ class ConverterServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/converter.php');
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views", self::CONVERTER_VIEWS_NAMESPACE);
+
+        // $this->loadViewComponentsAs(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX, [
+        //     \Aregsar\Converter\View\Components\Acme\Conversion\Converter::class,
+        // ]);
+
+        $this->loadViewComponentsAs("my", [
+            \Aregsar\Converter\View\Components\Converter::class,
+            \Aregsar\Converter\View\Components\Conversion\Converter::class,
+        ]);
     }
 }
