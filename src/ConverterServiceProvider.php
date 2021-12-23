@@ -8,7 +8,7 @@ class ConverterServiceProvider extends ServiceProvider
 {
     const CONVERTER_CONFIG_KEY = 'acme-converter';
     const CONVERTER_VIEWS_NAMESPACE = 'acme-converter';
-    const CONVERTER_COMPONENT_CLASS_TAG_PREFIX = 'acme';
+    const CONVERTER_COMPONENT_CLASS_TAG_PREFIX = 'acmeconverter';
     /**
      * Register the application services.
      */
@@ -38,6 +38,10 @@ class ConverterServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/' . self::CONVERTER_VIEWS_NAMESPACE)
             ], "views");
 
+            $this->publishes([
+                __DIR__ . '/../src/View/Components/' => app_path('View/Components/' . ucfirst(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX)),
+            ], 'components');
+
             //Add package commands here
             $this->commands([
                 \Aregsar\Converter\Console\Commands\ConverterCommand::class,
@@ -49,13 +53,8 @@ class ConverterServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views", self::CONVERTER_VIEWS_NAMESPACE);
 
-        // $this->loadViewComponentsAs(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX, [
-        //     \Aregsar\Converter\View\Components\Acme\Conversion\Converter::class,
-        // ]);
-
-        $this->loadViewComponentsAs("my", [
+        $this->loadViewComponentsAs(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX, [
             \Aregsar\Converter\View\Components\Converter::class,
-            \Aregsar\Converter\View\Components\Conversion\Converter::class,
         ]);
     }
 }
