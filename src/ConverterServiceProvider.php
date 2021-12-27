@@ -56,5 +56,8 @@ class ConverterServiceProvider extends ServiceProvider
         $this->loadViewComponentsAs(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX, [
             \Aregsar\Converter\View\Components\Converter::class,
         ]);
+
+        //register livewire components here
+        \Livewire\Livewire::component('show-amount', \Aregsar\Converter\Http\Livewire\ShowAmount::class);
     }
 }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Converter') }}</title>
+    @livewireStyles
 </head>
 
 <body>
@@ -14,6 +15,7 @@
         @yield('content')
         <h2>This is from the Layout</h2>
     </div>
+    @livewireScripts
 </body>
 
 </html>
