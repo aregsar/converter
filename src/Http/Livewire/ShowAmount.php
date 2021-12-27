@@ -15,7 +15,6 @@ class ShowAmount extends Component
 
     public function render()
     {
-        return view('livewire.show-amount');
-        //return view('acme-converter::components.livewire.show-amount');
+        return view('acme-converter::livewire.show-amount');
     }
 }
