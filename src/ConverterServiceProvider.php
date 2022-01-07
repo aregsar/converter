@@ -65,7 +65,7 @@ class ConverterServiceProvider extends ServiceProvider
 
 
         //register blade components here
-        // uncomment callAfterResolving method if encountering any issues
+        //uncomment this callAfterResolving method if you encounter any issues with the BladeCompiler not being available
         // $this->callAfterResolving(\Illuminate\View\Compilers\BladeCompiler::class, function () {
         //
         //explicitly register component classes in custom directories here
