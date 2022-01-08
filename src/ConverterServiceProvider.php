@@ -56,23 +56,40 @@ class ConverterServiceProvider extends ServiceProvider
 
         //load view component classes placed directly in the \Acme\Converter\View\Components\ directory
         //(will not work if the component class is placed in a sub directory of \Acme\Converter\View\Components\ directory)
-        $this->loadViewComponentsAs(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX, [
-            \Aregsar\Converter\View\Components\Converter::class,
-        ]);
+        $this->loadViewComponentsAs(
+            self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX,
+            [
+                \Aregsar\Converter\View\Components\Converter::class,
+            ]
+        );
 
         //register livewire components here
-        \Livewire\Livewire::component('show-amount', \Aregsar\Converter\Http\Livewire\ShowAmount::class);
-
+        \Livewire\Livewire::component(
+            'show-amount',
+            \Aregsar\Converter\Http\Livewire\ShowAmount::class
+        );
 
         //register blade components here
         //uncomment this callAfterResolving method if you encounter any issues with the BladeCompiler not being available
         // $this->callAfterResolving(\Illuminate\View\Compilers\BladeCompiler::class, function () {
         //
         //explicitly register component classes in custom directories here
-        \Illuminate\Support\Facades\Blade::component("acme-converter-conversion-convert", \Aregsar\Converter\View\Components\Custom\Converter::class);
+        \Illuminate\Support\Facades\Blade::component(
+            "acme-converter-conversion-convert",
+            \Aregsar\Converter\View\Components\Custom\Converter::class
+        );
         //
         // reversing the parameters will work as well. (see notes below)
-        // \Illuminate\Support\Facades\Blade::component(\Aregsar\Converter\View\Components\Custom\Converter::class, "acme-converter-conversion-convert");
+        // \Illuminate\Support\Facades\Blade::component(
+        //     \Aregsar\Converter\View\Components\Custom\Converter::class,
+        //     "acme-converter-conversion-convert"
+        // );
+        //
+        //explicitly register simple component views
+        \Illuminate\Support\Facades\Blade::component(
+            "acme-converter::components.converter.simple",
+            "acme-converter-converter-simple"
+        );
         //
         // });
     }
