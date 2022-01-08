@@ -4,6 +4,6 @@
     <x-acmeconverter-converter :amount="$amount" />
     <livewire:show-amount :amount="$amount" />
     <x-acme-converter-conversion-convert :amount="$amount" />
-    <x-acme-converter-converter-simple :amount="$amount" />
     @include('acme-converter::partials.message', ["message" => "rendering partial"])
+    <x-acme-converter-converter-simple :amount="$amount" />
 </x-acme-converter::layouts.converter>
