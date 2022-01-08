@@ -88,7 +88,7 @@ class ConverterServiceProvider extends ServiceProvider
         //explicitly register simple component views
         \Illuminate\Support\Facades\Blade::component(
             "acme-converter::components.converter.simple",
-            "acme-converter-converter-simple"
+            "acme-converter-simple"
         );
         //
         // });
