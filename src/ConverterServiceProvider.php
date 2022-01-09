@@ -64,10 +64,10 @@ class ConverterServiceProvider extends ServiceProvider
         );
 
         //register livewire components here
-        // \Livewire\Livewire::component(
-        //     'show-amount',
-        //     \Aregsar\Converter\Http\Livewire\ShowAmount::class
-        // );
+        \Livewire\Livewire::component(
+            'show-amount',
+            \Aregsar\Converter\Http\Livewire\ShowAmount::class
+        );
 
         //register blade components here
         //uncomment this callAfterResolving method if you encounter any issues with the BladeCompiler not being available
