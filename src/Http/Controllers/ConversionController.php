@@ -4,8 +4,14 @@ namespace Aregsar\Converter\Http\Controllers;
 
 class ConversionController extends Controller
 {
-    public function convert()
+    public function convert($currency)
     {
-        return 42;
+        $amount = \Converter::convert($currency);
+
+        $amount ??= "Currency not supported";
+
+        return view("acme-converter::converter.convert", [
+            "amount" => $amount,
+        ]);
     }
 }
