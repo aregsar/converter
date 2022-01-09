@@ -34,7 +34,10 @@ abstract class BaseTestCase extends TestCase
         //we just have a single service provider at the moment
         //The Orchestra testbench test framework will call the register methods and then the boot methods on
         //these service providers to emulate way Laravel bootstrap flow
-        return [ConverterServiceProvider::class];
+        return [
+            ConverterServiceProvider::class,
+            \Livewire\LivewireServiceProvider::class,
+        ];
     }
 
     /**
