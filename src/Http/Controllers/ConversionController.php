@@ -2,7 +2,7 @@
 
 namespace Aregsar\Converter\Http\Controllers;
 
-class ConversionController
+class ConversionController extends Controller
 {
     public function convert()
     {

@@ -10,7 +10,7 @@ Route::middleware([$routeMiddlewareGroup])
     ->prefix($routeUrlPrefix)
     ->name($routeNamePrefix)
     // uncomment namespace is to be able to use classic controller@action style routes
-    //->namespace("Aregsar\Converter\Http\Controllers")
+    // ->namespace("Aregsar\Converter\Http\Controllers")
     ->group(function () {
         Route::get("convert/{currency}", function ($currency) {
             $amount = \Converter::convert($currency);
