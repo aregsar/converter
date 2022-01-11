@@ -4,7 +4,7 @@ namespace Aregsar\Converter\Tests\Http\Controllers;
 
 use Aregsar\Converter\Tests\BaseTestCase;
 
-class ConversionControllerTests extends BaseTestCase
+class ConversionControllerTest extends BaseTestCase
 {
     /*@test*/
     public function test_route_returns_success()

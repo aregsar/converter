@@ -17,4 +17,9 @@ class ShowAmount extends Component
     {
         return view('acme-converter::livewire.show-amount');
     }
+
+    public function fix()
+    {
+        $this->amount = 43;
+    }
 }
