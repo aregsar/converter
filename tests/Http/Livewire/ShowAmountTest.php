@@ -4,6 +4,7 @@ namespace Aregsar\Converter\Tests\Routes\Converter\Tests\Http\Livewire;
 
 use Aregsar\Converter\Tests\BaseTestCase;
 use Livewire\Livewire;
+use Aregsar\Converter\Http\Livewire\ShowAmount;
 
 class ShowAmountTest extends BaseTestCase
 {
@@ -59,32 +60,32 @@ class ShowAmountTest extends BaseTestCase
     //Component Unit tests
 
     /** @test **/
-    public function verify_component_has_property_and_method_wired()
-    {
+    // public function verify_component_has_property_and_method_wired()
+    // {
 
-        Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class)
-            ->assertPropertyWired('amount');
-        //->assertMethodWired('fix');
-    }
+    //     Livewire::test(ShowAmount::class, ['amount' => 42])
+    //         ->assertPropertyWired('amount')
+    //         ->assertMethodWired('fix');
+    // }
 
     /** @test **/
-    // public function verify_can_set_ammount()
-    // {
-    //     Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class)
-    //         //set the amount property value to 42
-    //         ->set('amount', '42')
-    //         //assert the amount property is set to 42
-    //         ->assertSet('amount', '42')
-    //         //assert that the value 42 is rendered in the components view
-    //         ->assertSee("42");
-    // }
+    public function verify_can_set_ammount()
+    {
+        Livewire::test(ShowAmount::class, ['amount' => 42])
+            //set the amount property value to 42
+            ->set('amount', '42')
+            //assert the amount property is set to 42
+            ->assertSet('amount', '42')
+            //assert that the value 42 is rendered in the components view
+            ->assertSee("42");
+    }
 
     /** @test **/
     // public function verify_can_pass_ammount()
     // {
-    //     Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class, ['amount' => '42'])
+    //     Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class, ['amount' => 42])
     //         //assert the amount property is set to 42
-    //         ->assertSet('amount', '42')
+    //         ->assertSet('amount', 43)
     //         //assert that the value 42 is rendered in the components view
     //         ->assertSee("42");
     // }
