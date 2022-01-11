@@ -1,10 +1,10 @@
 <?php
 
-namespace Aregsar\Converter\Tests\Routes\Converter\Tests\Http\Livewire;
+namespace Acme\Converter\Tests\Http\Livewire;
 
 use Aregsar\Converter\Tests\BaseTestCase;
-use Livewire\Livewire;
 use Aregsar\Converter\Http\Livewire\ShowAmount;
+use Livewire\Livewire;
 
 class ShowAmountTest extends BaseTestCase
 {
@@ -59,48 +59,38 @@ class ShowAmountTest extends BaseTestCase
     //===================================================
     //Component Unit tests
 
-    /** @test **/
-    // public function verify_component_has_property_and_method_wired()
-    // {
 
-    //     Livewire::test(ShowAmount::class, ['amount' => 42])
-    //         ->assertPropertyWired('amount')
-    //         ->assertMethodWired('fix');
-    // }
+    /** @test **/
+    public function verify_can_pass_ammount()
+    {
+        Livewire::test(ShowAmount::class, ['amount' => 42])
+            //assert the amount property is set to 42
+            ->assertSet('amount', 42)
+            //assert that the value 42 is rendered in the components view
+            ->assertSee("42");
+    }
 
     /** @test **/
     public function verify_can_set_ammount()
     {
         Livewire::test(ShowAmount::class, ['amount' => 42])
             //set the amount property value to 42
-            ->set('amount', '42')
+            ->set('amount', '43')
             //assert the amount property is set to 42
-            ->assertSet('amount', '42')
+            ->assertSet('amount', '43')
             //assert that the value 42 is rendered in the components view
-            ->assertSee("42");
+            ->assertSee("43");
     }
 
     /** @test **/
-    // public function verify_can_pass_ammount()
-    // {
-    //     Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class, ['amount' => 42])
-    //         //assert the amount property is set to 42
-    //         ->assertSet('amount', 43)
-    //         //assert that the value 42 is rendered in the components view
-    //         ->assertSee("42");
-    // }
-
-    /** @test **/
-    // public function verify_can_change_amount()
-    // {
-    //     Livewire::test(\Acme\Converter\Http\Livewire\ShowAmount::class)
-    //         //set the amount property value to 42
-    //         ->set('amount', 42)
-    //         //call the fix method to change the value to 43
-    //         ->call('fix')
-    //         //assert the amount property is set to 43
-    //         ->assertSet('amount', '43')
-    //         //assert that the value 43 is rendered in the components view
-    //         ->assertSee("43");
-    // }
+    public function verify_can_change_amount()
+    {
+        Livewire::test(ShowAmount::class, ['amount' => 42])
+            //call the fix method to change the value to 43
+            ->call('fix')
+            //assert the amount property is set to 43
+            ->assertSet('amount', '43')
+            //assert that the value 43 is rendered in the components view
+            ->assertSee("43");
+    }
 }
