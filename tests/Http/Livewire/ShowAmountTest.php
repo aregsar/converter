@@ -29,9 +29,8 @@ class ShowAmountTest extends BaseTestCase
      */
     public function verify_livewire_component_exists_in_rendered_view()
     {
-        // $this->withoutExceptionHandling();
+        $routeNamePrefix = config('acme-converter.route_name_prefix');
 
-        $routeUrlPrefix = config('acme-converter.route_url_prefix');
 
         //mock the service in the route closure
         \Converter::shouldReceive("convert")
@@ -39,10 +38,11 @@ class ShowAmountTest extends BaseTestCase
             ->once()
             ->andReturn("42");
 
+
         // invoke the route closure that returns the view with the Livewire component
-        // $this->get(route("convert",["currency" => "EUR"]))
-        $this->get("{$routeUrlPrefix}convert/EUR")
-            //$this->get("{$routeUrlPrefix}conversion/convert/EUR")
+        //$this->get(route("converter.convert", ["currency" => "EUR"]))
+        $this->get(route("{$routeNamePrefix}convert", ["currency" => "EUR"]))
+            //$this->get("{$routeUrlPrefix}convert/EUR")
             ->assertOK()
             //assert we are rendering the view that should contain the livewire component
             ->assertViewIs("acme-converter::converter.convert")
