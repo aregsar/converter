@@ -49,6 +49,7 @@ class ConverterServiceProvider extends ServiceProvider
             ], 'components');
         }
 
+        $this->loadMiddleware($this->app->make(\Illuminate\Routing\Router::class));
         //Add package resource loading path code here
         $this->loadRoutesFrom(__DIR__ . '/../routes/converter.php');
 
@@ -92,5 +93,29 @@ class ConverterServiceProvider extends ServiceProvider
         );
         //
         // });
+
+        //$this->loadMiddleware($this->app->make(\Illuminate\Routing\Router::class));
+    }
+
+    public function loadMiddleware(\Illuminate\Routing\Router $router)
+    {
+        //Uncomment this if you want to load the middleware globally for all requests
+        //$kernel = $this->app->make(\Illuminate\Foundation\Http\Kernel::class);
+        //$kernel->pushMiddleware(\Aregsar\Converter\Http\Middleware\Wrap::class);
+        //// \Illuminate\Facade\Http\Kernel::pushMiddleware(\Acme\Converter\Http\Middleware\Wrap::class);
+
+        //Or Uncomment this if you want to load as an individual middleware to apply to a route or a controller using an alias
+        //$router = $this->app->make(\Illuminate\Routing\Router::class);
+        //$router->aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
+        //use the facade (must add the illuminate facades using statement)
+        //// \Illuminate\Routing\Facade\Router::aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
+
+        //Or Uncomment this if you want to add middleware to configured middleware group
+        $routeMiddlewareGroup = config('acme-converter.route_middleware_group');
+        $router->pushMiddlewareToGroup("web", \Aregsar\Converter\Http\Middleware\Wrap::class);
+        //$router->pushMiddlewareToGroup($routeMiddlewareGroup, \Acme\Converter\Http\Middleware\Wrap::class);
+        //use the facade (must add the illuminate facades using statement)
+        //// \Illuminate\Support\Facades\Route::pushMiddlewareToGroup("web", \Acme\Converter\Http\Middleware\Wrap::class);
+        //\Illuminate\Support\Facades\Route::pushMiddlewareToGroup($routeMiddlewareGroup, \Acme\Converter\Http\Middleware\Wrap::class);
     }
 }

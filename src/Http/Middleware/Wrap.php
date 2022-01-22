@@ -10,6 +10,8 @@ class Wrap
 {
     public function handle(Request $request, Closure $next)
     {
+        echo "\n from middelware \n";
+
         //inject header in request
         $request->headers->set("in", "incoming request");
 
