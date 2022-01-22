@@ -22,17 +22,17 @@ class WrapTest extends BaseTestCase
         $request = new Request();
 
         // $response = \Mockery::Mock(Response::class)
-        //     ->shouldReceive('header')
-        //     ->with('Access-Control-Allow-Origin', '*')
+        //     ->shouldReceive('headers->set')
+        //     ->with("out", "outgoing response")
         //     ->once()
         //     ->getMock();
 
-        $response = \Illuminate\Support\Facades\Response::shouldReceive('header')
-            ->with("out", "outgoing response")
-            ->once()
-            ->getMock();
+        // $response = \Illuminate\Support\Facades\Response::shouldReceive('headers->set')
+        //     ->with("out", "outgoing response")
+        //     ->once()
+        //     ->getMock();
 
-        //$response = new Response();
+        $response = new Response();
 
         $wrappedResponse = (new Wrap())->handle($request, function ($request)  use ($response) {
 
