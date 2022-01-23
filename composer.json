@@ -24,7 +24,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Aregsar\\Converter\\": "src/"
+            "Aregsar\\Converter\\": "src/",
+            "Aregsar\\Converter\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
