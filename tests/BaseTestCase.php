@@ -9,6 +9,8 @@ use Aregsar\Converter\ConverterServiceProvider;
 
 abstract class BaseTestCase extends TestCase
 {
+    //protected bool $migrateDatabase = true;
+
     /**
      * This method is called before each test.
      */
@@ -81,6 +83,9 @@ abstract class BaseTestCase extends TestCase
     {
         //set test database configuration settings
         $this->configTestDatabase();
+
+        //run migrations after setting up the test database configuration
+        $this->runMigrations();
     }
 
 
@@ -146,5 +151,43 @@ abstract class BaseTestCase extends TestCase
         //Thereby setting the default database connection for testing to "testdb".
         //config()->set('database.default', 'testing');
         config()->set('database.default', 'testdb');
+    }
+
+    private function runMigrations()
+    {
+        // Only uncomment this if you are not using the RefreshDatabase trait in your model tests
+        //
+        \Illuminate\Support\Facades\Schema::dropAllTables();
+
+        // $this->runClassicMigrations();
+
+        $this->runAnonymousClassMigrations();
+    }
+
+
+    // private function runClassicMigrations()
+    // {
+    //     //this is deprecated in Laravel 9 - uses legacy migrations - Laravel 8 and below
+
+    //     // Include the named migration class definition CreateAcmeConversionsTable from the file into the global namespace
+    //     include_once __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
+
+    //     (new CreateAcmeConversionsTable())->up();
+    //     //(new \CreateAcmeConversionsTable)->up();
+    // }
+
+    private function runAnonymousClassMigrations()
+    {
+        //New migrations use anonymous classes optional in laravel 8 default in laravel 9
+        //https://stackoverflow.com/questions/5948395/require-include-into-variable
+        //the included migration file returns an new-ed up instance of anonymous migration class
+        //that we assign to a variable and then call its up method
+
+        // the varidabe $createAcmeConversionsTable refers to the instantated anonymous class returned from the included file
+        // we need to use require instead of require_once because after the first call to require_once it will retunr the boolean true
+        // instead of the anonymous class
+        $createAcmeConversionsTable = require __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
+
+        $createAcmeConversionsTable->up();
     }
 }

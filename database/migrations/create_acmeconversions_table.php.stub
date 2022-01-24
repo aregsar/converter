@@ -1,10 +1,6 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-
-return new class extends Migration
+return new class extends \Illuminate\Database\Migrations\Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +9,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create("acmeconversions", function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create("acmeconversions", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->bigincrements("id");
             $table->string("currency");
             $table->integer("amount");
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("acmeconversions");
+        \Illuminate\Support\Facades\Schema::dropIfExists("acmeconversions");
     }
-}; //Dont forget the closing semicolon
+};
