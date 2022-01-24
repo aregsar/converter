@@ -180,6 +180,7 @@ abstract class BaseTestCase extends TestCase
     {
         //New migrations use anonymous classes optional in laravel 8 default in laravel 9
         //https://stackoverflow.com/questions/5948395/require-include-into-variable
+        //https://stackoverflow.com/questions/26257846/why-i-cannot-get-the-return-value-of-require-once-function-in-php
         //the included migration file returns an new-ed up instance of anonymous migration class
         //that we assign to a variable and then call its up method
 
