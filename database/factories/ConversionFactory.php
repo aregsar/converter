@@ -13,7 +13,7 @@ class ConversionFactory extends Factory
     {
         return [
             "currency" => $this->faker->word,
-            "amount"   => $this->faker->number,
+            "amount"   => $this->faker->numberBetween(0, 100),
         ];
     }
 }
