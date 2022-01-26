@@ -6,10 +6,9 @@ use Orchestra\Testbench\TestCase;
 
 use Aregsar\Converter\ConverterServiceProvider;
 
-
 abstract class BaseTestCase extends TestCase
 {
-    //protected bool $migrateDatabase = true;
+    // protected bool $migrateDatabase = true;
 
     /**
      * This method is called before each test.
@@ -86,6 +85,23 @@ abstract class BaseTestCase extends TestCase
 
         //run migrations after setting up the test database configuration
         $this->runMigrations();
+
+        //Create the test users table directly because we dont use a migration file
+        //for test users
+        //
+        //as an option we could create a migration file under a database/test directory
+        //$createAcmeUsersTable = require __DIR__ . '/../database/test/migrations/create_users_table.php';
+        //then call the up method of the class
+        // $createAcmeUsersTable->up();
+        \Illuminate\Support\Facades\Schema::create('acmeusers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
     }
 
 
@@ -153,6 +169,7 @@ abstract class BaseTestCase extends TestCase
         config()->set('database.default', 'testdb');
     }
 
+
     private function runMigrations()
     {
         // $this->runClassicMigrations();
@@ -167,9 +184,16 @@ abstract class BaseTestCase extends TestCase
 
         // Include the named migration class definition CreateAcmeConversionsTable from the file into the global namespace
         require_once __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
-
         (new \CreateAcmeConversionsTable())->up();
+
+        //Note: Uncomment below if you are using named class migration for the Notes model
+        //Assumes you have added the create_acmenotes_table.php.stub file that contains a
+        //migration class named CreateAcmeNotesTable
+        //require_once __DIR__ . '/../database/migrations/create_acmenotes_table.php.stub';
+        //(new \CreateAcmeNotesTable())->up();
+
     }
+
 
     private function runAnonymousClassMigrations()
     {
@@ -183,7 +207,9 @@ abstract class BaseTestCase extends TestCase
         // we need to use require instead of require_once because after the first call to require_once it will retunr the boolean true
         // instead of the anonymous class
         $createAcmeConversionsTable = require __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
-
         $createAcmeConversionsTable->up();
+
+        $createAcmeNotesTable = require __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
+        $createAcmeNotesTable->up();
     }
 }
