@@ -157,7 +157,7 @@ abstract class BaseTestCase extends TestCase
     {
         // Only uncomment this if you are not using the RefreshDatabase trait in your model tests
         //
-        \Illuminate\Support\Facades\Schema::dropAllTables();
+        // \Illuminate\Support\Facades\Schema::dropAllTables();
 
         // $this->runClassicMigrations();
 
