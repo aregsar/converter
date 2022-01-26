@@ -155,26 +155,21 @@ abstract class BaseTestCase extends TestCase
 
     private function runMigrations()
     {
-        // Only uncomment this if you are not using the RefreshDatabase trait in your model tests
-        //
-        // \Illuminate\Support\Facades\Schema::dropAllTables();
-
         // $this->runClassicMigrations();
 
         $this->runAnonymousClassMigrations();
     }
 
 
-    // private function runClassicMigrations()
-    // {
-    //     //this is deprecated in Laravel 9 - uses legacy migrations - Laravel 8 and below
+    private function runClassicMigrations()
+    {
+        //this is deprecated in Laravel 9 - uses legacy migrations - Laravel 8 and below
 
-    //     // Include the named migration class definition CreateAcmeConversionsTable from the file into the global namespace
-    //     include_once __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
+        // Include the named migration class definition CreateAcmeConversionsTable from the file into the global namespace
+        require_once __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
 
-    //     (new CreateAcmeConversionsTable())->up();
-    //     //(new \CreateAcmeConversionsTable)->up();
-    // }
+        (new \CreateAcmeConversionsTable())->up();
+    }
 
     private function runAnonymousClassMigrations()
     {
