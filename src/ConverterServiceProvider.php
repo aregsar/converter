@@ -172,7 +172,15 @@ class ConverterServiceProvider extends ServiceProvider
         $runOrder = 0
     ) {
         //$timestamp = date("Y_m_d_His", time());
-        $date = new \DateTime("NOW");
+        //$date = new \DateTime("NOW");
+
+        // $date = new \DateTime();
+        // $date->setTimestamp(time());
+        $timeZone = new \DateTimeZone('America/Los_Angeles');
+        //$timeZone = new \DateTimeZone('state/city');
+
+
+        $date = new \DateTime("now", $timeZone);
 
         if ($runOrder > 0) {
             //https://www.php.net/manual/en/datetime.add.php
