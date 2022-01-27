@@ -181,18 +181,17 @@ class ConverterServiceProvider extends ServiceProvider
 
 
         $date = new \DateTime("now", $timeZone);
+        //$date = new \DateTime("now");
+
 
         if ($runOrder > 0) {
             //https://www.php.net/manual/en/datetime.add.php
 
             //add a period of seconds to maintain timestamp order
             $date->add(new \DateInterval("PT{$runOrder}S"));
-            //$date->add(new \DateInterval('PT1S'));
         }
 
-        //$timestamp = $date->format("Y-m-d H:i:s");
         $timestamp = $date->format("Y_m_d_His");
-
 
         $migrationFiles[__DIR__ . "/../database/migrations/{$migrationFile}.php.stub"]
             = database_path("migrations/{$timestamp}_{$migrationFile}.php");
