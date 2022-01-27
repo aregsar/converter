@@ -144,30 +144,40 @@ class ConverterServiceProvider extends ServiceProvider
 
         //we only publish if none of the migration files have been published
         //we must delete all the published files to be able to re-publish
-        if ($this->isMigrationFilePublished("create_acme_conversions_table", $filesystem)) return;
-        //if($this->isMigrationFilePublished("create_acme_notes_table", $fileSystem))return;
+        if ($this->isMigrationFilePublished("create_acmeconversions_table", $filesystem)) return;
+        if ($this->isMigrationFilePublished("create_acmenotes_table", $filesystem)) return;
 
+        echo "\n migration files do not exist\n";
         // for named class migration files can alternativly use isMigrationClassPublished instead of isMigrationFilePublished
         //if($this->isMigrationClassPublished("CreateAcmeconversionsTable")) return;
-        ////if($this->isMigrationClassPublished('CreateNotesTable')) return;
+        //if($this->isMigrationClassPublished('CreateNotesTable')) return;
 
         //if we got here, none of the files are currently published to we can add them to list of files to publish
-        $this->addMigrationFileToArray("create_acme_conversions_table", $migrationFiles);
-        //$this->addMigrationFileToArray("create_acme_notes_table", $migrationFiles, 1);
+        $this->addMigrationFileToArray("create_acmeconversions_table", $migrationFiles);
+        $this->addMigrationFileToArray("create_acmenotes_table", $migrationFiles, 1);
+
+
+        var_dump($migrationFiles);
 
         //finally we get to publish the files using the "migrations" vendor:publish tag
-        $this->publishes($migrationFiles, 'migrations');
+        //$this->publishes($migrationFiles, 'migrations');
     }
 
 
-    private function addMigrationFileToArray($migrationFile,  $migrationFiles, $runOrder = 0)
-    {
+    private function addMigrationFileToArray(
+        $migrationFile,
+        &$migrationFiles,
+        $runOrder = 0
+    ) {
         //$timestamp = date("Y_m_d_His", time());
         $date = new \DateTime("NOW");
 
         if ($runOrder > 0) {
+            //https://www.php.net/manual/en/datetime.add.php
+
             //add a period of seconds to maintain timestamp order
-            $date->add(new \DateInterval("P${$runOrder}S"));
+            $date->add(new \DateInterval("PT{$runOrder}S"));
+            //$date->add(new \DateInterval('PT1S'));
         }
 
         $timestamp = $date->format("Y-m-d H:i:s");
