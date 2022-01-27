@@ -182,7 +182,9 @@ class ConverterServiceProvider extends ServiceProvider
             //$date->add(new \DateInterval('PT1S'));
         }
 
-        $timestamp = $date->format("Y-m-d H:i:s");
+        //$timestamp = $date->format("Y-m-d H:i:s");
+        $timestamp = $date->format("Y_m_d_His");
+
 
         $migrationFiles[__DIR__ . "/../database/migrations/{$migrationFile}.php.stub"]
             = database_path("migrations/{$timestamp}_{$migrationFile}.php");
