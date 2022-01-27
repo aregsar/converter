@@ -15,7 +15,7 @@ class TestUser extends Authenticatable
 
     protected $guarded = [];
 
-    protected $table = 'acmeusers';
+    protected $table = "users";
 
     protected static function newFactory()
     {

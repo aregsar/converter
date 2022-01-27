@@ -93,7 +93,8 @@ abstract class BaseTestCase extends TestCase
         //$createAcmeUsersTable = require __DIR__ . '/../database/test/migrations/create_users_table.php';
         //then call the up method of the class
         // $createAcmeUsersTable->up();
-        \Illuminate\Support\Facades\Schema::create('acmeusers', function (\Illuminate\Database\Schema\Blueprint $table) {
+        //
+        \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
