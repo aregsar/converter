@@ -54,7 +54,7 @@ class ConverterServiceProvider extends ServiceProvider
             // Add package migration file publishing
             $this->publishesMigrations();
             // Or uncomment line below and comment out publishesMigrations to run migrations directly from this package
-            // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+            //$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Instructions if you decide to use loadMigrationsFrom instead of publishesMigrations:
@@ -154,13 +154,15 @@ class ConverterServiceProvider extends ServiceProvider
 
         //if we got here, none of the files are currently published to we can add them to list of files to publish
         $this->addMigrationFileToArray("create_acmeconversions_table", $migrationFiles);
+        //keeping migrations in order example: add 1 second to the next migration file time stamp
         $this->addMigrationFileToArray("create_acmenotes_table", $migrationFiles, 1);
+        //keep incrementing the number by one for each subsequent migration file we add
 
 
         var_dump($migrationFiles);
 
         //finally we get to publish the files using the "migrations" vendor:publish tag
-        //$this->publishes($migrationFiles, 'migrations');
+        $this->publishes($migrationFiles, 'migrations');
     }
 
 
@@ -184,6 +186,10 @@ class ConverterServiceProvider extends ServiceProvider
 
         $migrationFiles[__DIR__ . "/../database/migrations/{$migrationFile}.php.stub"]
             = database_path("migrations/{$timestamp}_{$migrationFile}.php");
+
+        // Note: runningInConsole is true for when running phpunit tests
+        // so database_path() result in the base path below when running phpunit tests:
+        // ~/path/to/converter/vendor/orchestra/testbench-core/laravel/database/
     }
 
 
