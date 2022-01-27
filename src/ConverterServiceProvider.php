@@ -120,7 +120,6 @@ class ConverterServiceProvider extends ServiceProvider
         //// \Illuminate\Facade\Http\Kernel::pushMiddleware(\Acme\Converter\Http\Middleware\Wrap::class);
 
         //Or Uncomment this if you want to load as an individual middleware to apply to a route or a controller using an alias
-        //$router = $this->app->make(\Illuminate\Routing\Router::class);
         //$router->aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
         //use the facade (must add the illuminate facades using statement)
         //// \Illuminate\Routing\Facade\Router::aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
