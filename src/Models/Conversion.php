@@ -13,6 +13,10 @@ class Conversion extends Model
 
     protected $guarded = [];
 
+    // protected $casts = [
+    //     'amount' => 'integer'
+    // ];
+
     protected static function newFactory()
     {
         //return new \Aregsar\Converter\Database\Factories\ConversionFactory;

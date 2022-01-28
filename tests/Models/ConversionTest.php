@@ -42,4 +42,14 @@ class ConversionTest extends BaseTestCase
         $this->assertEquals($conversion2->currency, "GBP");
         $this->assertEquals($conversion2->amount, 3);
     }
+
+    /** @test */
+    public function it_gets_all_models()
+    {
+        Conversion::create(["currency" => "EUR", "amount" => 2]);
+        Conversion::create(["currency" => "GBP", "amount" => 3]);
+
+        $models = Conversion::all();
+        $this->assertCount(2, $models);
+    }
 }
