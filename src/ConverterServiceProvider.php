@@ -209,8 +209,8 @@ class ConverterServiceProvider extends ServiceProvider
     private function isMigrationFilePublished($migrationFile, $filesystem): bool
     {
         //checks if file does not exist in the application migration folder
-        //$matchingFilePaths = Collection::make(database_path('migrations'))
-        $matchingFilePaths = Collection::make($this->app->databasePath() . '/migrations/')
+        $matchingFilePaths = Collection::make(database_path('migrations/'))
+            // $matchingFilePaths = Collection::make($this->app->databasePath() . '/migrations/')
             ->flatMap(function ($path) use ($migrationFile, $filesystem) {
                 //Find path names matching given pattern.
                 return $filesystem->glob($path . "*_{$migrationFile}.php");
@@ -221,7 +221,10 @@ class ConverterServiceProvider extends ServiceProvider
             //file exists
             $fullMigrationfileName = $matchingFilePaths->first();
 
-            echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
+            if (!$this->app->runningUnitTests()) {
+                echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
+            }
+
             return true;
         }
 
@@ -232,7 +235,9 @@ class ConverterServiceProvider extends ServiceProvider
     private function isMigrationClassPublished($migrationClass): bool
     {
         if (class_exists($migrationClass)) {
-            echo "$migrationClass migration class is published, remove before re-publishing";
+            if (!$this->app->runningUnitTests()) {
+                echo "Migration class $migrationClass is published, remove before re-publishing\n";
+            }
             return true;
         }
 
