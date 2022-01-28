@@ -147,7 +147,9 @@ class ConverterServiceProvider extends ServiceProvider
         if ($this->isMigrationFilePublished("create_acmeconversions_table", $filesystem)) return;
         if ($this->isMigrationFilePublished("create_acmenotes_table", $filesystem)) return;
 
-        echo "\n migration files do not exist\n";
+        //echo "\n migration files do not exist\n";
+
+
         // for named class migration files can alternativly use isMigrationClassPublished instead of isMigrationFilePublished
         //if($this->isMigrationClassPublished("CreateAcmeconversionsTable")) return;
         //if($this->isMigrationClassPublished('CreateNotesTable')) return;
@@ -159,7 +161,9 @@ class ConverterServiceProvider extends ServiceProvider
         //keep incrementing the number by one for each subsequent migration file we add
 
 
-        var_dump($migrationFiles);
+        //var_dump($migrationFiles);
+        //var_dump($this->app->databasePath());
+
 
         //finally we get to publish the files using the "migrations" vendor:publish tag
         $this->publishes($migrationFiles, 'migrations');
@@ -212,10 +216,12 @@ class ConverterServiceProvider extends ServiceProvider
                 return $filesystem->glob($path . "*_{$migrationFile}.php");
             });
 
-        if (!$matchingFilePaths->empty()) {
+        if (!$matchingFilePaths->isEmpty()) {
+            //var_dump($matchingFilePaths);
             //file exists
             $fullMigrationfileName = $matchingFilePaths->first();
-            echo "$fullMigrationfileName migration file is published, remove before re-publishing";
+
+            echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
             return true;
         }
 
