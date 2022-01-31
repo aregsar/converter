@@ -11,16 +11,21 @@ class Converter
         $this->currencyMap = $currencyMap ?? ['EUR' => 42];
     }
 
+    // public function convert(string $currency): ?int
+    // {
+    //     if (!array_key_exists(
+    //         $currency,
+    //         $this->currencyMap
+    //     )) {
+    //         return null;
+    //     }
+
+    //     return $this->currencyMap[$currency];
+    // }
+
     public function convert(string $currency): ?int
     {
-        if (!array_key_exists(
-            $currency,
-            $this->currencyMap
-        )) {
-            return null;
-        }
-
-        return $this->currencyMap[$currency];
+        return $this->convertFromDatabase($currency);
     }
 
     public function convertFromDatabase(string $currency): ?int
