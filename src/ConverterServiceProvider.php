@@ -175,21 +175,12 @@ class ConverterServiceProvider extends ServiceProvider
         &$migrationFiles,
         $runOrder = 0
     ) {
-        //$timestamp = date("Y_m_d_His", time());
+        //$timeZone = new \DateTimeZone('America/Los_Angeles');
         //$date = new \DateTime("NOW");
-
-        // $date = new \DateTime();
-        // $date->setTimestamp(time());
-        $timeZone = new \DateTimeZone('America/Los_Angeles');
-        //$timeZone = new \DateTimeZone('state/city');
-
-
-        $date = new \DateTime("now", $timeZone);
-        //$date = new \DateTime("now");
-
+        //$date = new \DateTime("now", $timeZone);
+        $date = new \DateTime("now");
 
         if ($runOrder > 0) {
-            //https://www.php.net/manual/en/datetime.add.php
 
             //add a period of seconds to maintain timestamp order
             $date->add(new \DateInterval("PT{$runOrder}S"));
@@ -221,9 +212,9 @@ class ConverterServiceProvider extends ServiceProvider
             //file exists
             $fullMigrationfileName = $matchingFilePaths->first();
 
-            if (!$this->app->runningUnitTests()) {
-                echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
-            }
+            // if (!$this->app->runningUnitTests()) {
+            //     echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
+            // }
 
             return true;
         }
