@@ -34,8 +34,6 @@ class ConverterTest extends BaseTestCase
 
         $amount = \Converter::convertFromDatabase("EUR");
 
-        var_dump($amount);
-
         $this->assertEquals($amount, 2);
 
         $amount = \Converter::convertFromDatabase("GBP");

@@ -11,7 +11,10 @@ class ConverterServiceProvider extends ServiceProvider
 {
     const CONVERTER_CONFIG_KEY = 'acme-converter';
     const CONVERTER_VIEWS_NAMESPACE = 'acme-converter';
+
+    //no dash between acme and converter words is intentional
     const CONVERTER_COMPONENT_CLASS_TAG_PREFIX = 'acmeconverter';
+
     /**
      * Register the application services.
      */
@@ -20,10 +23,7 @@ class ConverterServiceProvider extends ServiceProvider
         //Add configuration loading code here
         $this->mergeConfigFrom(__DIR__ . '/../config/converter.php', self::CONVERTER_CONFIG_KEY);
 
-        //Add Laravel container service registration code here
-        $this->app->singleton('converter', function ($app) {
-            return new Converter();
-        });
+        $this->registerPackageServices();
     }
 
     /**
@@ -33,38 +33,102 @@ class ConverterServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
 
-            //Add package commands here
-            $this->commands([
-                \Aregsar\Converter\Console\Commands\ConverterCommand::class,
-            ]);
+            $this->callBootMethodsRunningInConsole();
 
-            //Add package resource publishing code here
-            $this->publishes([
-                __DIR__ . '/../config/converter.php' => config_path(self::CONVERTER_CONFIG_KEY . '.php'),
-            ], 'config');
-
-            $this->publishes([
-                __DIR__ . '/../resources/views' => resource_path('views/vendor/' . self::CONVERTER_VIEWS_NAMESPACE)
-            ], "views");
-
-            $this->publishes([
-                __DIR__ . '/../src/View/Components/' => app_path('View/Components/' . ucfirst(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX)),
-            ], 'components');
-
-            // Add package migration file publishing
-            $this->publishesMigrations();
-            // Or uncomment line below and comment out publishesMigrations to run migrations directly from this package
-            //$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Instructions if you decide to use loadMigrationsFrom instead of publishesMigrations:
-            // loadMigrationsFrom inform Laravel to load and run migration files from the database/migrations
-            // package directory when we run php artisan migrate from the application that includes this package.
-            // Therefore the migration file names must begin with a standard migration timestamp format and
-            // you must remove the .stub file extension so the files end with .php extension
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //replace the callBootMethodsRunningInConsole with the following to optimize the call
+            //$this->callBootMethodsRunningInConsoleOptimized();
         }
 
+        $this->callBootMethods();
+    }
+
+    /**
+     * Register services provided by this package with the Laravel container
+     */
+    private function registerPackageServices()
+    {
+        $this->app->singleton('converter', function ($app) {
+            return new Converter();
+        });
+    }
+
+    /**
+     * Bootstrap the application services that only need to be bootstraopped when Laravel is run from the console.
+     */
+    private function callBootMethodsRunningInConsole()
+    {
+        //Add package commands
+        $this->artisanCommands();
+
+        //Add package resource publishing code
+
+        $this->publishesConfiguration();
+
+        $this->publishesViews();
+
+        $this->publishesViewComponentClasses();
+
+        // Add package migration file publishing
+        $this->publishesMigrations();
+        // Or uncomment line below and comment out publishesMigrations to run migrations directly from this package
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Instructions if you decide to use loadMigrationsFrom instead of publishesMigrations:
+        // loadMigrationsFrom inform Laravel to load and run migration files from the database/migrations
+        // package directory when we run php artisan migrate from the application that includes this package.
+        // Therefore the migration file names must begin with a standard migration timestamp format and
+        // you must remove the .stub file extension so the files end with .php extension
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+
+    /**
+     * Bootstrap the application services that only need to be bootstraopped when Laravel is run from the console.
+     * This method is a optional optimized version of the callBootMethodsRunningInConsole method
+     */
+    private function callBootMethodsRunningInConsoleOptimized()
+    {
+        //Add package commands
+        $this->artisanCommands();
+
+        \Illuminate\Support\Facades\Event::listen(function (\Illuminate\Console\Events\CommandStarting $command) {
+            if ($command->command === 'vendor:publish') {
+                echo '\n vendor:publish \n';
+                //Add package resource publishing code
+
+                $this->publishesConfiguration();
+
+                $this->publishesViews();
+
+                $this->publishesViewComponentClasses();
+
+                // Add package migration file publishing
+                $this->publishesMigrations();
+            }
+        });
+
+        // Instead of calling  publishesMigrations we can uncomment line below to run migrations directly from this package when the artisan migrate command is run from the command line in the application that includes this package
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Instructions if you decide to use loadMigrationsFrom instead of publishesMigrations:
+        // loadMigrationsFrom inform Laravel to load and run migration files from the database/migrations
+        // package directory when we run php artisan migrate from the application that includes this package.
+        // Therefore the migration file names must begin with a standard migration timestamp format and
+        // you must remove the .stub file extension so the files end with .php extension
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+    /**
+     * Bootstrap the application services that need to always be bootstrapped.
+     */
+    private function callBootMethods()
+    {
+        //uncomment this line only if using classic factories, otherwise you can remove it
+        // \Illuminate\Database\Eloquent\Factory::load(__DIR__.'/../database/factories');
+
+        //Add package middleware here
         $this->loadMiddleware($this->app->make(\Illuminate\Routing\Router::class));
 
         //Add package resource loading path code here
@@ -72,8 +136,78 @@ class ConverterServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . "/../resources/views", self::CONVERTER_VIEWS_NAMESPACE);
 
-        //load view component classes placed directly in the \Acme\Converter\View\Components\ directory
-        //(will not work if the component class is placed in a sub directory of \Acme\Converter\View\Components\ directory)
+        $this->aliasAnonymousViewComponentViews();
+
+        $this->loadViewComponents();
+
+        $this->loadLivewireComponents();
+    }
+
+    /**
+     * Bootstrap the artsian command provided by the package
+     */
+    private function artisanCommands()
+    {
+        //Add package commands here
+        $this->commands([
+            \Aregsar\Converter\Console\Commands\ConverterCommand::class,
+        ]);
+    }
+
+    /**
+     * Bootstrap the publishing of the package configuration file.
+     */
+    private function publishesConfiguration()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/converter.php' => config_path(self::CONVERTER_CONFIG_KEY . '.php'),
+        ], 'acme.config');
+    }
+
+    /**
+     * Bootstrap the publishing of the package view files.
+     * publishes all views including view component and livewire views
+     */
+    private function publishesViews()
+    {
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/' . self::CONVERTER_VIEWS_NAMESPACE)
+        ], "acme.views");
+    }
+
+    /**
+     * Bootstrap the publishing of the package view component class files
+     */
+    private function publishesViewComponentClasses()
+    {
+        $this->publishes([
+            __DIR__ . '/../src/View/Components/' => app_path('View/Components/' . ucfirst(self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX)),
+        ], 'acme.components');
+    }
+
+
+    /**
+     * alias anonymous (simple) component view file tag name
+     * allows an arbitrary alias string to be used as the blade component tag name instead of
+     * the more verbose string format that refers to the view file of the component
+     */
+    private function aliasAnonymousViewComponentViews()
+    {
+        \Illuminate\Support\Facades\Blade::component(
+            "acme-converter::components.converter.simple", //component view file tag name
+            "acme-converter-simple" //tag name alias
+        );
+    }
+
+
+    /**
+     * Inform Laravel where to load package view components classes from
+     * Also informs Laravel the prefix in the tag name that refers to the component class from the package
+     */
+    private function loadViewComponents()
+    {
+        //load class based view component classes placed directly in the \Aregsar\Converter\View\Components\ directory
+        //The loadViewComponentsAs call will not work if the view component class is placed in a sub directory of \Aregsar\Converter\View\Components\ directory or other custom directory)
         $this->loadViewComponentsAs(
             self::CONVERTER_COMPONENT_CLASS_TAG_PREFIX,
             [
@@ -81,61 +215,58 @@ class ConverterServiceProvider extends ServiceProvider
             ]
         );
 
-        //register livewire components here
+        //To place view component class in a custom directory
+        //explicitly register class based view component classes in custom directories here
+        \Illuminate\Support\Facades\Blade::component(
+            "acme-converter-conversion-convert", //component tagname
+            \Aregsar\Converter\View\Components\Custom\Converter::class
+        );
+    }
+
+
+
+    /**
+     * register livewire components here
+     */
+    private function loadLivewireComponents()
+    {
         \Livewire\Livewire::component(
             'show-amount',
             \Aregsar\Converter\Http\Livewire\ShowAmount::class
         );
-
-        //register blade components here
-        //uncomment this callAfterResolving method if you encounter any issues with the BladeCompiler not being available
-        // $this->callAfterResolving(\Illuminate\View\Compilers\BladeCompiler::class, function () {
-        //
-        //explicitly register component classes in custom directories here
-        \Illuminate\Support\Facades\Blade::component(
-            "acme-converter-conversion-convert",
-            \Aregsar\Converter\View\Components\Custom\Converter::class
-        );
-        //
-        // reversing the parameters will work as well. (see notes below)
-        // \Illuminate\Support\Facades\Blade::component(
-        //     \Aregsar\Converter\View\Components\Custom\Converter::class,
-        //     "acme-converter-conversion-convert"
-        // );
-        //
-        //explicitly register simple component views
-        \Illuminate\Support\Facades\Blade::component(
-            "acme-converter::components.converter.simple",
-            "acme-converter-simple"
-        );
-        //
-        // });
     }
 
-    public function loadMiddleware(\Illuminate\Routing\Router $router)
+
+    /**
+     * Load middleware provided by the package
+     */
+    private function loadMiddleware(\Illuminate\Routing\Router $router)
     {
         //Uncomment this if you want to load the middleware globally for all requests
         //$kernel = $this->app->make(\Illuminate\Foundation\Http\Kernel::class);
         //$kernel->pushMiddleware(\Aregsar\Converter\Http\Middleware\Wrap::class);
-        //// \Illuminate\Facade\Http\Kernel::pushMiddleware(\Acme\Converter\Http\Middleware\Wrap::class);
+        //// \Illuminate\Facade\Http\Kernel::pushMiddleware(\Aregsar\Converter\Http\Middleware\Wrap::class);
 
         //Or Uncomment this if you want to load as an individual middleware to apply to a route or a controller using an alias
-        //$router->aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
+        //$router->aliasMiddleware('wrap', \Aregsar\Converter\Http\Middleware\Wrap::class);
         //use the facade (must add the illuminate facades using statement)
-        //// \Illuminate\Routing\Facade\Router::aliasMiddleware('wrap', \Acme\Converter\Http\Middleware\Wrap::class);
+        //// \Illuminate\Routing\Facade\Router::aliasMiddleware('wrap', \Aregsar\Converter\Http\Middleware\Wrap::class);
 
         //Or Uncomment this if you want to add middleware to configured middleware group
         $routeMiddlewareGroup = config('acme-converter.route_middleware_group');
         $router->pushMiddlewareToGroup("web", \Aregsar\Converter\Http\Middleware\Wrap::class);
-        //$router->pushMiddlewareToGroup($routeMiddlewareGroup, \Acme\Converter\Http\Middleware\Wrap::class);
+        //$router->pushMiddlewareToGroup($routeMiddlewareGroup, \Aregsar\Converter\Http\Middleware\Wrap::class);
         //use the facade (must add the illuminate facades using statement)
-        //// \Illuminate\Support\Facades\Route::pushMiddlewareToGroup("web", \Acme\Converter\Http\Middleware\Wrap::class);
-        //\Illuminate\Support\Facades\Route::pushMiddlewareToGroup($routeMiddlewareGroup, \Acme\Converter\Http\Middleware\Wrap::class);
+        //// \Illuminate\Support\Facades\Route::pushMiddlewareToGroup("web", \Aregsar\Converter\Http\Middleware\Wrap::class);
+        //\Illuminate\Support\Facades\Route::pushMiddlewareToGroup($routeMiddlewareGroup, \Aregsar\Converter\Http\Middleware\Wrap::class);
     }
 
 
-    //this method will add the migration file timestamp and copy the file to the appication
-    //databse/migrations directory when we run vendor:publish with the "migrations" tag
+    /**
+     * Bootstrap the publishing of the package migration files
+     * this method will add the migration file timestamp and copy the file to the appication
+     * databse/migrations directory when we run vendor:publish with the "migrations" tag
+     */
     private function publishesMigrations()
     {
         $filesystem = $this->app->make(Filesystem::class);
@@ -147,9 +278,13 @@ class ConverterServiceProvider extends ServiceProvider
         if ($this->isMigrationFilePublished("create_acmeconversions_table", $filesystem)) return;
         if ($this->isMigrationFilePublished("create_acmenotes_table", $filesystem)) return;
 
+        //////////////////////////////////////////////
+        // cd vendor/orchestra/testbench-core/laravel/database/migrations
+        // touch vendor/orchestra/testbench-core/laravel/database/migrations/2022_01_27_223338_create_acmenotes_table.php
+        // rm vendor/orchestra/testbench-core/laravel/database/migrations/2022_01_27_223338_create_acmenotes_table.php
+        //////////////////////////////////////////////
+
         //echo "\n migration files do not exist\n";
-
-
         // for named class migration files can alternativly use isMigrationClassPublished instead of isMigrationFilePublished
         //if($this->isMigrationClassPublished("CreateAcmeconversionsTable")) return;
         //if($this->isMigrationClassPublished('CreateNotesTable')) return;
@@ -164,20 +299,23 @@ class ConverterServiceProvider extends ServiceProvider
         //var_dump($migrationFiles);
         //var_dump($this->app->databasePath());
 
-
         //finally we get to publish the files using the "migrations" vendor:publish tag
-        $this->publishes($migrationFiles, 'migrations');
+        $this->publishes($migrationFiles, 'acme.migrations');
     }
 
 
+    /**
+     * Helper for publishesMigrations method
+     */
     private function addMigrationFileToArray(
         $migrationFile,
         &$migrationFiles,
         $runOrder = 0
     ) {
+
         //$timeZone = new \DateTimeZone('America/Los_Angeles');
-        //$date = new \DateTime("NOW");
         //$date = new \DateTime("now", $timeZone);
+        //$date = new \DateTime("NOW");
         $date = new \DateTime("now");
 
         if ($runOrder > 0) {
@@ -197,21 +335,25 @@ class ConverterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Helper for publishesMigrations method
+     */
     private function isMigrationFilePublished($migrationFile, $filesystem): bool
     {
         //checks if file does not exist in the application migration folder
         $matchingFilePaths = Collection::make(database_path('migrations/'))
-            // $matchingFilePaths = Collection::make($this->app->databasePath() . '/migrations/')
+            //$matchingFilePaths = Collection::make($this->app->databasePath() . '/migrations/')
             ->flatMap(function ($path) use ($migrationFile, $filesystem) {
                 //Find path names matching given pattern.
                 return $filesystem->glob($path . "*_{$migrationFile}.php");
             });
 
         if (!$matchingFilePaths->isEmpty()) {
-            //var_dump($matchingFilePaths);
             //file exists
+
             $fullMigrationfileName = $matchingFilePaths->first();
 
+            //if(\Illuminate\Support\Facades\App::runningUnitTests()) {
             // if (!$this->app->runningUnitTests()) {
             //     echo "Migration file $fullMigrationfileName is published, remove before re-publishing\n";
             // }
@@ -222,13 +364,15 @@ class ConverterServiceProvider extends ServiceProvider
         return false;
     }
 
-
+    /**
+     * Helper for publishesMigrations method
+     */
     private function isMigrationClassPublished($migrationClass): bool
     {
         if (class_exists($migrationClass)) {
-            if (!$this->app->runningUnitTests()) {
-                echo "Migration class $migrationClass is published, remove before re-publishing\n";
-            }
+            // if (!$this->app->runningUnitTests()) {
+            //     echo "Migration class $migrationClass is published, remove before re-publishing\n";
+            // }
             return true;
         }
 
