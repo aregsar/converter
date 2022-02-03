@@ -94,6 +94,9 @@ abstract class BaseTestCase extends TestCase
         //then call the up method of the class
         // $createAcmeUsersTable->up();
         //
+
+        \Illuminate\Support\Facades\Schema::dropIfExists("users");
+
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -208,9 +211,11 @@ abstract class BaseTestCase extends TestCase
         // we need to use require instead of require_once because after the first call to require_once it will retunr the boolean true
         // instead of the anonymous class
         $createAcmeConversionsTable = require __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
+        $createAcmeConversionsTable->down();
         $createAcmeConversionsTable->up();
 
         $createAcmeNotesTable = require __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
+        $createAcmeNotesTable->down();
         $createAcmeNotesTable->up();
     }
 }
