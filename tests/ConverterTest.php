@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ConverterTest extends BaseTestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
     /**
      * @test
