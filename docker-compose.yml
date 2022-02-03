@@ -1,0 +1,17 @@
+version: "3.1"
+services:
+  myapp.mysql:
+    image: mysql:8.0
+    container_name: myapp.mysql
+    volumes:
+      - convertmysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=myapp
+      - MYSQL_DATABASE=myapp
+      - MYSQL_USER=myapp
+      - MYSQL_PASSWORD=myapp
+    ports:
+      - "8011:3306"
+volumes:
+    convertmysql:
+        driver: local

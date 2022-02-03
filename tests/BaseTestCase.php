@@ -81,7 +81,7 @@ abstract class BaseTestCase extends TestCase
     protected function getEnvironmentSetup($app)
     {
         //set test database configuration settings
-        $this->configTestDatabase();
+        //$this->configTestDatabase();
 
         //run migrations after setting up the test database configuration
         $this->runMigrations();

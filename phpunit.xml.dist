@@ -17,5 +17,11 @@ stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9
   </testsuites>
   <php>
     <env name="APP_KEY" value="base64:l4qgIps1IcsFGnW8slshO2XLiSzuefNwUdOzwPeus64="/>
+    <env name="DB_CONNECTION" value="mysql"/>
+    <env name="DB_HOST" value="127.0.0.1"/>
+    <env name="DB_PORT" value="8011"/>
+    <env name="DB_DATABASE" value="myapp"/>
+    <env name="DB_USERNAME" value="myapp"/>
+    <env name="DB_PASSWORD" value="myapp"/>
   </php>
 </phpunit>
