@@ -95,8 +95,14 @@ abstract class BaseTestCase extends TestCase
         // $createAcmeUsersTable->up();
         //
 
-        \Illuminate\Support\Facades\Schema::dropIfExists("users");
+        // disableForeign
+        //(new \Illuminate\Database\Schema\MySqlBuilder)->dropAllTables();
+        //\Illuminate\Support\Facades\Schema::dropAllTables();
+        \Illuminate\Support\Facades\Schema::hasTable('users');
+        \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
 
+
+        \Illuminate\Support\Facades\Schema::dropIfExists("users");
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
