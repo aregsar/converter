@@ -29,6 +29,8 @@ abstract class BaseTestCase extends TestCase
     protected function tearDown(): void
     {
         //Add cleanup code here before the parent tearDown
+        \Illuminate\Support\Facades\Schema::dropAllTables();
+
         parent::tearDown();
     }
 
@@ -83,6 +85,7 @@ abstract class BaseTestCase extends TestCase
         //set test database configuration settings
         //$this->configTestDatabase();
 
+        //\Illuminate\Support\Facades\Schema::dropAllTables();
 
         /////////////////////////////////////////////////////////////////////////////////////
         // (new \Illuminate\Database\Schema\MySqlBuilder)->dropAllTables();
@@ -90,7 +93,7 @@ abstract class BaseTestCase extends TestCase
         // \Illuminate\Support\Facades\Schema::connection("mysql")->dropAllTables();
         // static::$app['db']->connection("mysql")->getSchemaBuilder()->dropAllTables();
         // static::$app['db']->connection()->getSchemaBuilder()->dropAllTables();
-        // \Illuminate\Support\Facades\Schema::dropAllTables();
+        //\Illuminate\Support\Facades\Schema::dropAllTables();
         //$mysqlSchemaBuilder = static::$app['db']->connection()->getSchemaBuilder();
         //
         //$mysqlSchemaBuilder = $app['db']->connection()->getSchemaBuilder();
@@ -106,7 +109,7 @@ abstract class BaseTestCase extends TestCase
 
         //Create the test users table directly because we dont use a migration file
         //for test users
-        \Illuminate\Support\Facades\Schema::dropIfExists("users");
+        // \Illuminate\Support\Facades\Schema::dropIfExists("users");
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -225,8 +228,8 @@ abstract class BaseTestCase extends TestCase
         $createAcmeNotesTable = require __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
 
         //reverse order of up migrations
-        $createAcmeNotesTable->down();
-        $createAcmeConversionsTable->down();
+        // $createAcmeNotesTable->down();
+        // $createAcmeConversionsTable->down();
 
         $createAcmeConversionsTable->up();
         $createAcmeNotesTable->up();
