@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 abstract class BaseTestCase extends TestCase
 {
 
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
 
     /**
@@ -89,11 +89,9 @@ abstract class BaseTestCase extends TestCase
         //set test database configuration settings
         //$this->configTestDatabase();
 
-        // \Illuminate\Support\Facades\Schema::dropAllTables();
-
         //run migrations after setting up the test database configuration
-        //$this->migrateDatabase();
-        $this->migrateMySqlDatabase();
+        $this->migrateDatabase();
+        //$this->migrateMySqlDatabase();
     }
 
 
@@ -103,20 +101,12 @@ abstract class BaseTestCase extends TestCase
         //called after this method does not drop the tables (and then try to run migrations which it will not find)
         if (\Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated === false) {
 
-            echo "\nmigrated is false\n";
-
-            if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
-                echo "\nmigrated is false but has users table\n";
-            }
-
             //drop tables just in case they remain from a previous test run
             \Illuminate\Support\Facades\Schema::dropAllTables();
 
             $this->migrateDatabase();
 
             \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
-        } else {
-            echo "\nmigrated is true\n";
         }
     }
 
