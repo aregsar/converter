@@ -209,7 +209,12 @@ abstract class BaseTestCase extends TestCase
 
         // Include the named migration class definition CreateAcmeConversionsTable from the file into the global namespace
         require_once __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
+        require_once __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
+
+
         (new \CreateAcmeConversionsTable())->up();
+        (new \CreateAcmeNotesTable())->up();
+
 
         //Note: Uncomment below if you are using named class migration for the Notes model
         //Assumes you have added the create_acmenotes_table.php.stub file that contains a
@@ -234,9 +239,6 @@ abstract class BaseTestCase extends TestCase
         $createAcmeConversionsTable = require __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
         $createAcmeNotesTable = require __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
 
-        //reverse order of up migrations
-        // $createAcmeNotesTable->down();
-        // $createAcmeConversionsTable->down();
 
         $createAcmeConversionsTable->up();
         $createAcmeNotesTable->up();
