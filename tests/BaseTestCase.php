@@ -8,7 +8,9 @@ use Aregsar\Converter\ConverterServiceProvider;
 
 abstract class BaseTestCase extends TestCase
 {
-    // protected bool $migrateDatabase = true;
+
+    //use RefreshDatabase;
+
 
     /**
      * This method is called before each test.
@@ -30,6 +32,8 @@ abstract class BaseTestCase extends TestCase
     {
         //Add cleanup code here before the parent tearDown
         \Illuminate\Support\Facades\Schema::dropAllTables();
+
+        // \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated
 
         parent::tearDown();
     }
@@ -85,31 +89,68 @@ abstract class BaseTestCase extends TestCase
         //set test database configuration settings
         //$this->configTestDatabase();
 
+        // \Illuminate\Support\Facades\Schema::dropAllTables();
+
+        $this->migrateDatabase();
+
+        //$this->migrateMySqlDatabase();
+
+
+
         //\Illuminate\Support\Facades\Schema::dropAllTables();
 
-        /////////////////////////////////////////////////////////////////////////////////////
-        // (new \Illuminate\Database\Schema\MySqlBuilder)->dropAllTables();
-        // \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
-        // \Illuminate\Support\Facades\Schema::connection("mysql")->dropAllTables();
-        // static::$app['db']->connection("mysql")->getSchemaBuilder()->dropAllTables();
-        // static::$app['db']->connection()->getSchemaBuilder()->dropAllTables();
-        //\Illuminate\Support\Facades\Schema::dropAllTables();
-        //$mysqlSchemaBuilder = static::$app['db']->connection()->getSchemaBuilder();
-        //
-        //$mysqlSchemaBuilder = $app['db']->connection()->getSchemaBuilder();
-        //var_dump($mysqlSchemaBuilder);
-        // if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
-        //     echo "\ndoes not have users table\n";
-        // }
 
-        // \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
-        //if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
         //run migrations after setting up the test database configuration
+        // $this->runMigrations();
+
+        // //Create the test users table directly because we dont use a migration file
+        // //for test users
+
+        // \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
+        //     $table->id();
+        //     $table->string('name');
+        //     $table->string('email')->unique();
+        //     $table->timestamp('email_verified_at')->nullable();
+        //     $table->string('password');
+        //     $table->rememberToken();
+        //     $table->timestamps();
+        // });
+
+
+    }
+
+
+    private function migrateMySqlDatabase()
+    {
+        //on the first run migrate the database, then set migrated to true so the refreshDatabase trait
+        //called after this method does not drop the tables (and then try to run migrations which it will not find)
+        if (\Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated === false) {
+
+            echo "migrated is false";
+
+            if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
+                echo "migrated is false but has users table";
+            }
+
+            //drop tables just in case they remain from a previous test run
+            \Illuminate\Support\Facades\Schema::dropAllTables();
+
+            $this->migrateDatabase();
+
+            \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
+        } else {
+            echo "migrated is true";
+        }
+    }
+
+    private function migrateDatabase()
+    {
+
         $this->runMigrations();
 
         //Create the test users table directly because we dont use a migration file
         //for test users
-        // \Illuminate\Support\Facades\Schema::dropIfExists("users");
+
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -119,7 +160,6 @@ abstract class BaseTestCase extends TestCase
             $table->rememberToken();
             $table->timestamps();
         });
-        //}
     }
 
 
