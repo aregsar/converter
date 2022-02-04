@@ -33,9 +33,7 @@ abstract class BaseTestCase extends TestCase
     protected function tearDown(): void
     {
         //Add cleanup code here before the parent tearDown
-        \Illuminate\Support\Facades\Schema::dropAllTables();
-
-        // \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated
+        //\Illuminate\Support\Facades\Schema::dropAllTables();
 
         parent::tearDown();
     }
