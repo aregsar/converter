@@ -6,10 +6,12 @@ use Orchestra\Testbench\TestCase;
 
 use Aregsar\Converter\ConverterServiceProvider;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 abstract class BaseTestCase extends TestCase
 {
 
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
 
     /**
@@ -91,32 +93,9 @@ abstract class BaseTestCase extends TestCase
 
         // \Illuminate\Support\Facades\Schema::dropAllTables();
 
-        $this->migrateDatabase();
-
-        //$this->migrateMySqlDatabase();
-
-
-
-        //\Illuminate\Support\Facades\Schema::dropAllTables();
-
-
         //run migrations after setting up the test database configuration
-        // $this->runMigrations();
-
-        // //Create the test users table directly because we dont use a migration file
-        // //for test users
-
-        // \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->string('email')->unique();
-        //     $table->timestamp('email_verified_at')->nullable();
-        //     $table->string('password');
-        //     $table->rememberToken();
-        //     $table->timestamps();
-        // });
-
-
+        //$this->migrateDatabase();
+        $this->migrateMySqlDatabase();
     }
 
 
@@ -126,10 +105,10 @@ abstract class BaseTestCase extends TestCase
         //called after this method does not drop the tables (and then try to run migrations which it will not find)
         if (\Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated === false) {
 
-            echo "migrated is false";
+            echo "\nmigrated is false\n";
 
             if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
-                echo "migrated is false but has users table";
+                echo "\nmigrated is false but has users table\n";
             }
 
             //drop tables just in case they remain from a previous test run
@@ -139,7 +118,7 @@ abstract class BaseTestCase extends TestCase
 
             \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
         } else {
-            echo "migrated is true";
+            echo "\nmigrated is true\n";
         }
     }
 
