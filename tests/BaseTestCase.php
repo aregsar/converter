@@ -24,7 +24,7 @@ abstract class BaseTestCase extends TestCase
         //Add initialization code here after the parent setUp
 
         //see notes in method to enable this call
-        $this->loadFactories();
+        //$this->loadFactories();
     }
 
     /**
@@ -136,38 +136,38 @@ abstract class BaseTestCase extends TestCase
     // Only uncomment code in this method if factories are
     // not already being loaded through the service provider for classic factories
     // or being loaded through models for class based factories.
-    private function loadFactories()
-    {
+    // private function loadFactories()
+    // {
 
-        //uncomment one of these calls depending on the type of factory you use
+    //     //uncomment one of these calls depending on the type of factory you use
 
-        //only uncomment this call if using class based factories
-        //for class based factories,  this call is not needed if the model we call
-        //factory method on has the newFactory() method defined for it explicitly or as a trait
-        //
-        //$this->loadClassBasedFactories();
+    //     //only uncomment this call if using class based factories
+    //     //for class based factories,  this call is not needed if the model we call
+    //     //factory method on has the newFactory() method defined for it explicitly or as a trait
+    //     //
+    //     //$this->loadClassBasedFactories();
 
-        //only uncoment this call if using classic factories
-        //for legacy factories we need to call this so the factory is available for our tests
-        //unless we have loaded them in the boot method of our service provider
-        //
-        //$this->loadClassicFactories();
+    //     //only uncoment this call if using classic factories
+    //     //for legacy factories we need to call this so the factory is available for our tests
+    //     //unless we have loaded them in the boot method of our service provider
+    //     //
+    //     //$this->loadClassicFactories();
 
-    }
+    // }
 
-    private function loadClassBasedFactories()
-    {
-        //this only works with class based factories in laravel 7 and above
-        \Illuminate\Database\Eloquent\Factories\Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'acme\\converter\\database\\factories\\' . class_basename($modelName) . 'Factory'
-        );
-    }
+    // private function loadClassBasedFactories()
+    // {
+    //     //this only works with class based factories in laravel 7 and above
+    //     \Illuminate\Database\Eloquent\Factories\Factory::guessFactoryNamesUsing(
+    //         fn (string $modelName) => 'acme\\converter\\database\\factories\\' . class_basename($modelName) . 'Factory'
+    //     );
+    // }
 
-    private function loadClassicFactories()
-    {
-        //this only works for classic factories in Laravel 7 and below
-        $this->withFactories(__DIR__ . '/../database/factories');
-    }
+    // private function loadClassicFactories()
+    // {
+    //     //this only works for classic factories in Laravel 7 and below
+    //     $this->withFactories(__DIR__ . '/../database/factories');
+    // }
 
     private function configTestDatabase()
     {
