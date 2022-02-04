@@ -83,25 +83,29 @@ abstract class BaseTestCase extends TestCase
         //set test database configuration settings
         //$this->configTestDatabase();
 
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        // (new \Illuminate\Database\Schema\MySqlBuilder)->dropAllTables();
+        // \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
+        // \Illuminate\Support\Facades\Schema::connection("mysql")->dropAllTables();
+        // static::$app['db']->connection("mysql")->getSchemaBuilder()->dropAllTables();
+        // static::$app['db']->connection()->getSchemaBuilder()->dropAllTables();
+        // \Illuminate\Support\Facades\Schema::dropAllTables();
+        //$mysqlSchemaBuilder = static::$app['db']->connection()->getSchemaBuilder();
+        //
+        //$mysqlSchemaBuilder = $app['db']->connection()->getSchemaBuilder();
+        //var_dump($mysqlSchemaBuilder);
+        // if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
+        //     echo "\ndoes not have users table\n";
+        // }
+
+        // \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
+        //if (\Illuminate\Support\Facades\Schema::hasTable('users') === false) {
         //run migrations after setting up the test database configuration
         $this->runMigrations();
 
         //Create the test users table directly because we dont use a migration file
         //for test users
-        //
-        //as an option we could create a migration file under a database/test directory
-        //$createAcmeUsersTable = require __DIR__ . '/../database/test/migrations/create_users_table.php';
-        //then call the up method of the class
-        // $createAcmeUsersTable->up();
-        //
-
-        // disableForeign
-        //(new \Illuminate\Database\Schema\MySqlBuilder)->dropAllTables();
-        //\Illuminate\Support\Facades\Schema::dropAllTables();
-        \Illuminate\Support\Facades\Schema::hasTable('users');
-        \Illuminate\Support\Facades\Schema::connection("mysql")->hasTable('users');
-
-
         \Illuminate\Support\Facades\Schema::dropIfExists("users");
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
@@ -112,6 +116,7 @@ abstract class BaseTestCase extends TestCase
             $table->rememberToken();
             $table->timestamps();
         });
+        //}
     }
 
 
@@ -217,11 +222,13 @@ abstract class BaseTestCase extends TestCase
         // we need to use require instead of require_once because after the first call to require_once it will retunr the boolean true
         // instead of the anonymous class
         $createAcmeConversionsTable = require __DIR__ . "/../database/migrations/create_acmeconversions_table.php.stub";
-        $createAcmeConversionsTable->down();
-        $createAcmeConversionsTable->up();
-
         $createAcmeNotesTable = require __DIR__ . "/../database/migrations/create_acmenotes_table.php.stub";
+
+        //reverse order of up migrations
         $createAcmeNotesTable->down();
+        $createAcmeConversionsTable->down();
+
+        $createAcmeConversionsTable->up();
         $createAcmeNotesTable->up();
     }
 }
