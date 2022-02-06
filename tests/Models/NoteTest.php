@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NoteTest extends BaseTestCase
 {
-    //use RefreshDatabase;
 
     /** @test */
     function note_belongs_to_testuser_owner()

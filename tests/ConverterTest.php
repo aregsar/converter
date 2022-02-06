@@ -11,18 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ConverterTest extends BaseTestCase
 {
-    //use RefreshDatabase;
-
-    /**
-     * @test
-     */
-    // public function it_converts()
-    // {
-    //     $amount = \Converter::convert("EUR");
-
-    //     $this->assertEquals($amount, 42);
-    // }
-
 
     /**
      * @test

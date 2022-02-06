@@ -10,8 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ConversionTest extends BaseTestCase
 {
 
-    //use RefreshDatabase;
-
     /** @test */
     public function it_creates_conversion()
     {
