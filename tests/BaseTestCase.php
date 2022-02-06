@@ -85,16 +85,14 @@ abstract class BaseTestCase extends TestCase
 
         //run migrations after setting up the test database configuration
 
-        //drop all tables in case there are tables remaining from a previous test run
-        \Illuminate\Support\Facades\Schema::dropAllTables();
-
-        //run the migrations
         $this->migrateDatabase();
     }
 
 
     private function migrateDatabase()
     {
+        //drop all tables in case there are tables remaining from a previous test run
+        \Illuminate\Support\Facades\Schema::dropAllTables();
 
         $this->runMigrations();
 
