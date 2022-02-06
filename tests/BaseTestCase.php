@@ -8,8 +8,12 @@ use Aregsar\Converter\ConverterServiceProvider;
 
 use Aregsar\Converter\ConverterFacade;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 abstract class BaseTestCase extends TestCase
 {
+
+    use RefreshDatabase;
 
     /**
      * This method is called before each test.
@@ -27,8 +31,6 @@ abstract class BaseTestCase extends TestCase
     protected function tearDown(): void
     {
         //Add cleanup code here before the parent tearDown
-
-        \Illuminate\Support\Facades\Schema::dropAllTables();
 
         parent::tearDown();
     }
@@ -58,6 +60,7 @@ abstract class BaseTestCase extends TestCase
         ];
     }
 
+
     /**
      * This method is called before each test.
      * Can set database configuration and run database migrations here to setup the test environment.
@@ -85,20 +88,34 @@ abstract class BaseTestCase extends TestCase
 
         //run migrations after setting up the test database configuration
 
-        $this->migrateDatabase();
+        //call migrateMySqlDatabase() instead of directly calling migrateDatabase() when using MySQL
+        //works in conjunction with the refreshDatabase trait added to this class
+        $this->migrateMySqlDatabase();
     }
 
 
+
+    private function migrateMySqlDatabase()
+    {
+        //on the first test run migrate the database, then set migrated to true so the refreshDatabase trait
+        //called after this method does not drop the tables (and then try to run migrations which it will not find)
+        if (\Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated === false) {
+
+            $this->migrateDatabase();
+
+            \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
+        }
+    }
+
     private function migrateDatabase()
     {
-        //drop all tables in case there are tables remaining from a previous test run
+        //drop all tables (in case there are tables remaining from a previous test run)
         \Illuminate\Support\Facades\Schema::dropAllTables();
 
         $this->runMigrations();
 
         //Create the test users table directly because we dont use a migration file
         //for test users
-
         \Illuminate\Support\Facades\Schema::create("users", function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
