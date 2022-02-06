@@ -6,13 +6,10 @@ use Orchestra\Testbench\TestCase;
 
 use Aregsar\Converter\ConverterServiceProvider;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Aregsar\Converter\ConverterFacade;
 
 abstract class BaseTestCase extends TestCase
 {
-
-    //use RefreshDatabase;
-
 
     /**
      * This method is called before each test.
@@ -22,9 +19,6 @@ abstract class BaseTestCase extends TestCase
         parent::setUp();
 
         //Add initialization code here after the parent setUp
-
-        //see notes in method to enable this call
-        //$this->loadFactories();
     }
 
     /**
@@ -33,7 +27,8 @@ abstract class BaseTestCase extends TestCase
     protected function tearDown(): void
     {
         //Add cleanup code here before the parent tearDown
-        //\Illuminate\Support\Facades\Schema::dropAllTables();
+
+        \Illuminate\Support\Facades\Schema::dropAllTables();
 
         parent::tearDown();
     }
@@ -59,10 +54,9 @@ abstract class BaseTestCase extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Converter' => \Aregsar\Converter\ConverterFacade::class
+            'Converter' => ConverterFacade::class
         ];
     }
-
 
     /**
      * This method is called before each test.
@@ -90,25 +84,14 @@ abstract class BaseTestCase extends TestCase
         //$this->configTestDatabase();
 
         //run migrations after setting up the test database configuration
+
+        //drop all tables in case there are tables remaining from a previous test run
+        \Illuminate\Support\Facades\Schema::dropAllTables();
+
+        //run the migrations
         $this->migrateDatabase();
-        //$this->migrateMySqlDatabase();
     }
 
-
-    private function migrateMySqlDatabase()
-    {
-        //on the first run migrate the database, then set migrated to true so the refreshDatabase trait
-        //called after this method does not drop the tables (and then try to run migrations which it will not find)
-        if (\Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated === false) {
-
-            //drop tables just in case they remain from a previous test run
-            \Illuminate\Support\Facades\Schema::dropAllTables();
-
-            $this->migrateDatabase();
-
-            \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = true;
-        }
-    }
 
     private function migrateDatabase()
     {
@@ -129,45 +112,6 @@ abstract class BaseTestCase extends TestCase
         });
     }
 
-
-
-    //This method loads Model Factories For Testing only
-    //factories loaded using this method will not be avialable in applications that include this package.
-    // Only uncomment code in this method if factories are
-    // not already being loaded through the service provider for classic factories
-    // or being loaded through models for class based factories.
-    // private function loadFactories()
-    // {
-
-    //     //uncomment one of these calls depending on the type of factory you use
-
-    //     //only uncomment this call if using class based factories
-    //     //for class based factories,  this call is not needed if the model we call
-    //     //factory method on has the newFactory() method defined for it explicitly or as a trait
-    //     //
-    //     //$this->loadClassBasedFactories();
-
-    //     //only uncoment this call if using classic factories
-    //     //for legacy factories we need to call this so the factory is available for our tests
-    //     //unless we have loaded them in the boot method of our service provider
-    //     //
-    //     //$this->loadClassicFactories();
-
-    // }
-
-    // private function loadClassBasedFactories()
-    // {
-    //     //this only works with class based factories in laravel 7 and above
-    //     \Illuminate\Database\Eloquent\Factories\Factory::guessFactoryNamesUsing(
-    //         fn (string $modelName) => 'acme\\converter\\database\\factories\\' . class_basename($modelName) . 'Factory'
-    //     );
-    // }
-
-    // private function loadClassicFactories()
-    // {
-    //     //this only works for classic factories in Laravel 7 and below
-    //     $this->withFactories(__DIR__ . '/../database/factories');
-    // }
 
     private function configTestDatabase()
     {
@@ -214,14 +158,6 @@ abstract class BaseTestCase extends TestCase
 
         (new \CreateAcmeConversionsTable())->up();
         (new \CreateAcmeNotesTable())->up();
-
-
-        //Note: Uncomment below if you are using named class migration for the Notes model
-        //Assumes you have added the create_acmenotes_table.php.stub file that contains a
-        //migration class named CreateAcmeNotesTable
-        //require_once __DIR__ . '/../database/migrations/create_acmenotes_table.php.stub';
-        //(new \CreateAcmeNotesTable())->up();
-
     }
 
 
