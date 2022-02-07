@@ -14,7 +14,7 @@ class ConverterCommand extends Command
         //acme-converter is our root configuration key under which all settings reside
         $commandPrefix = config('acme-converter.command_prefix');
 
-        $this->signature = "$commandPrefix:converter:convert {currency}";
+        $this->signature = "{$commandPrefix}converter:convert {currency}";
 
         parent::__construct();
     }

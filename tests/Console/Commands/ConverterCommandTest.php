@@ -23,7 +23,7 @@ class ConverterCommandTest extends BaseTestCase
 
         $commandPrefix = config("acme-converter.command_prefix");
 
-        $this->artisan("$commandPrefix:converter:convert EUR")
+        $this->artisan("{$commandPrefix}converter:convert EUR")
             ->expectsOutput("42\n")
             ->assertExitCode(0);
     }
