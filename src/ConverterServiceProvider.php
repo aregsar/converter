@@ -33,10 +33,10 @@ class ConverterServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
 
-            $this->callBootMethodsRunningInConsole();
+            //$this->callBootMethodsRunningInConsole();
 
             //replace the callBootMethodsRunningInConsole with the following to optimize the call
-            //$this->callBootMethodsRunningInConsoleOptimized();
+            $this->callBootMethodsRunningInConsoleOptimized();
         }
 
         $this->callBootMethods();
@@ -92,9 +92,12 @@ class ConverterServiceProvider extends ServiceProvider
         //Add package commands
         $this->artisanCommands();
 
+
         \Illuminate\Support\Facades\Event::listen(function (\Illuminate\Console\Events\CommandStarting $command) {
-            if ($command->command === 'vendor:publish') {
-                echo '\n vendor:publish \n';
+            echo "\ncallBootMethodsRunningInConsoleOptimized\n";
+
+            if ($command->command === "vendor:publish") {
+                echo "\n$command->command\n";
                 //Add package resource publishing code
 
                 $this->publishesConfiguration();
